@@ -1,0 +1,4 @@
+[INFO] 20:57:32:026 Servidor/(5860:5860): Servidor listo para recibir al cliente
+[INFO] 20:58:04:937 Servidor/(5860:5860): Se conecto un cliente!
+[INFO] 20:58:04:937 Servidor/(5860:5860): Me llego el mensaje valor
+[ERROR] 20:58:04:938 Servidor/(5860:5860): el cliente se desconecto. Terminando servidor
