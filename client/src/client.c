@@ -2,25 +2,63 @@
 
 int main(void)
 {
-    /*---------------------------------------------------PARTE 1-------------------------------------------------------------*/
+	/*---------------------------------------------------PARTE 2-------------------------------------------------------------*/
 
-	// definicion de parametro utilizado para crear la instancia del archivo de config
-	char* path = string_new();
+	int conexion;
+	char* ip;
+	char* puerto;
+	char* valor;
 
-	// configuro el valor de parametro para crear la instancia del archivo de config
-	string_append(&path, "/home/utnso/shared_folder/so-tp0/client/configs/tp0.config");
+	t_log* logger;
+	t_config* config;
 
-	// creacion de la instancia del archivo de config
-	t_config* config_file = config_create(path);
+	/* ---------------- LOGGING ---------------- */
 
-	// creo la key a leer del archivo config 
-	char* key = string_new();
-	string_append(&key, "CLAVE"); 
+	logger = iniciar_logger();
 
-	// leo el value de la key del archivo de config
-	char* key_value = string_new();
-	key_value = config_get_string_value(config_file, key);
+	// Usando el logger creado previamente
+	// Escribi: "Hola! Soy un log"
 
+	log_info(logger, "Soy un log");
+
+	/* ---------------- ARCHIVOS DE CONFIGURACION ---------------- */
+
+	config = iniciar_config();
+
+	// Usando el config creado previamente, leemos los valores del config y los 
+	// dejamos en las variables 'ip', 'puerto' y 'valor'
+
+	ip = config_get_string_value(config, "IP");
+	puerto = config_get_string_value(config, "PUERTO");
+
+	// Loggeamos el valor de config
+	char* clave = config_get_string_value(config, "CLAVE");
+	log_info(logger, clave);
+
+	/* ---------------- LEER DE CONSOLA ---------------- */
+
+	leer_consola(logger);
+
+	/*---------------------------------------------------PARTE 3-------------------------------------------------------------*/
+
+	// ADVERTENCIA: Antes de continuar, tenemos que asegurarnos que el servidor esté corriendo para poder conectarnos a él
+
+	// Creamos una conexión hacia el servidor
+	conexion = crear_conexion(ip, puerto);
+
+	// Enviamos al servidor el valor de CLAVE como mensaje
+
+	// Armamos y enviamos el paquete
+	paquete(conexion);
+
+	terminar_programa(conexion, logger, config);
+
+	/*---------------------------------------------------PARTE 5-------------------------------------------------------------*/
+	// Proximamente
+}
+
+t_log* iniciar_logger(void)
+{
     // definicion de parametros utilizados para crear la instancia de logger
     char* file = string_new();
     char* process_name = string_new();
@@ -29,19 +67,65 @@ int main(void)
 
     // configuro el valor de parametros para crear la instancia de logger
     string_append(&file, "/home/utnso/shared_folder/so-tp0/client/logs/tp0.log");
-    string_append(&process_name, "PROCESO_DEL_TP0");
+    string_append(&process_name, "CLIENTE");
     is_active_console = true;
     level = LOG_LEVEL_INFO;
 
-    // creacion de la instancia del logger
-    t_log* logger = log_create(file, process_name, is_active_console, level);
+	t_log* nuevo_logger = log_create(file, process_name, is_active_console, level);
 
-	// usamos log_info para loggear el string "Soy un Log"
-	log_info(logger, key_value);
+	return nuevo_logger;
+}
 
-	// cierro la instancia del archivo de config
-	config_destroy(config_file);
+t_config* iniciar_config(void)
+{
+	// definicion de parametro utilizado para crear la instancia del archivo de config
+	char* path = string_new();
 
-	// cerramos el logger
-	log_destroy(logger);
+	// configuro el valor de parametro para crear la instancia del archivo de config
+	string_append(&path, "/home/utnso/shared_folder/so-tp0/client/cliente.config");
+
+	// creacion de la instancia del archivo de config
+	t_config* nuevo_config = config_create(path);
+
+	return nuevo_config;
+}
+
+void leer_consola(t_log* logger)
+{
+	char* leido;
+
+	// La primera te la dejo de yapa
+	leido = readline("> ");
+
+	// El resto, las vamos leyendo y logueando hasta recibir un string vacío
+	while(strcmp(leido,"\0") != 0)
+	{
+		log_info(logger, leido);
+		free(leido);
+
+		leido = readline("> ");
+	}
+
+	// ¡No te olvides de liberar las lineas antes de regresar!
+	free(leido);
+
+}
+
+void paquete(int conexion)
+{
+	// Ahora toca lo divertido!
+	char* leido;
+	t_paquete* paquete;
+
+	// Leemos y esta vez agregamos las lineas al paquete
+
+
+	// ¡No te olvides de liberar las líneas y el paquete antes de regresar!
+	
+}
+
+void terminar_programa(int conexion, t_log* logger, t_config* config)
+{
+	/* Y por ultimo, hay que liberar lo que utilizamos (conexion, log y config) 
+	  con las funciones de las commons y del TP mencionadas en el enunciado */
 }
