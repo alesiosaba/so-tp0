@@ -32,8 +32,8 @@ int main(void)
 	puerto = config_get_string_value(config, "PUERTO");
 
 	// Loggeamos el valor de config
-	char* clave = config_get_string_value(config, "CLAVE");
-	log_info(logger, clave);
+	// char* clave = config_get_string_value(config, "CLAVE");
+	// log_info(logger, clave);
 
 	/* ---------------- LEER DE CONSOLA ---------------- */
 
@@ -47,10 +47,10 @@ int main(void)
 	conexion = crear_conexion(ip, puerto);
 
 	// Enviamos al servidor el valor de CLAVE como mensaje
-	enviar_mensaje(clave, conexion);
+	//enviar_mensaje(clave, conexion);
 
 	// Armamos y enviamos el paquete
-	// paquete(conexion);
+	paquete(conexion);
 
 	terminar_programa(conexion, logger, config);
 
@@ -116,12 +116,28 @@ void paquete(int conexion)
 {
 	// Ahora toca lo divertido!
 	char* leido;
-	t_paquete* paquete;
+	t_paquete* paquete = crear_paquete();
+	int tamanio;
 
 	// Leemos y esta vez agregamos las lineas al paquete
 
+	leido = readline("> ");
+
+	// El resto, las vamos leyendo y logueando hasta recibir un string vacío
+	while(strcmp(leido,"\0") != 0)
+	{
+		tamanio = strlen(leido) + 1;
+		agregar_a_paquete(paquete, leido, tamanio);
+		free(leido);
+
+		leido = readline("> ");
+	}
+	free(leido);
+
+	enviar_paquete(paquete,conexion);
 
 	// ¡No te olvides de liberar las líneas y el paquete antes de regresar!
+	eliminar_paquete(paquete);
 	
 }
 

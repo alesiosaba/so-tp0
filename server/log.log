@@ -1,0 +1,8 @@
+[INFO] 19:53:23:519 Servidor/(11610:11610): Servidor listo para recibir al cliente
+[INFO] 19:53:33:276 Servidor/(11610:11610): Se conecto un cliente!
+[INFO] 19:54:04:898 Servidor/(11610:11610): Me llegaron los siguientes valores:
+
+[INFO] 19:54:04:899 Servidor/(11610:11610): ale puto
+[INFO] 19:54:04:900 Servidor/(11610:11610): mameeeeeeeen
+[INFO] 19:54:04:900 Servidor/(11610:11610): chau
+[ERROR] 19:54:04:900 Servidor/(11610:11610): el cliente se desconecto. Terminando servidor
